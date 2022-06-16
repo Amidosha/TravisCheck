@@ -1,0 +1,18 @@
+language: python
+python:
+  - "3.9"
+install:
+  - pip install -r requirements.txt
+
+script:
+  - pytest
+
+
+services:
+  - docker
+
+before_install:
+  - docker pull selenium/hub
+  - docker pull selenium/node-chrome
+  - docker run -d -p 4444:4444 --name selenium-hub selenium/hub
+  - docker run -d --link selenium-hub:hub --name selenium-node-chrome -v /dev/shm:/dev/shm selenium/node-chrome
